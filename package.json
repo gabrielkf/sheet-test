@@ -1,0 +1,12 @@
+{
+  "name": "sheet-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "go": "node index.js"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.3"
+  }
+}
