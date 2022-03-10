@@ -1,34 +1,51 @@
 const excel = require('exceljs');
 const { resolve, join } = require('path');
-const { createWriteStream } = require('fs');
 
-const fileDir = resolve(__dirname, '..', 'assets');
-const originalFile = join(fileDir, 'demo.xlsx');
+const { CODES, TAGS } = require('./constants/replaceVariables');
 
-async function editSheet() {
+const assets = resolve(__dirname, '..', 'assets');
+const originalFile = join(assets, 'template.xlsx');
+const logoFile = join(assets, 'bulbe.png');
+
+const A4 = 9;
+
+async function editSheet(replacements) {
   const workbook = new excel.Workbook();
   await workbook.xlsx.readFile(originalFile);
 
-  const TAG = '{tag}';
-
   const sheet = workbook.worksheets[0];
-  // const cell = sheet.findCell('A12');
-  // console.log(cell);
 
-  for (var i = 1; i <= sheet.actualRowCount; i++) {
-    for (var j = 1; j <= sheet.actualColumnCount; j++) {
+  for (var i = 1; i <= sheet.rowCount; i++) {
+    for (var j = 1; j <= sheet.columnCount; j++) {
       const cell = sheet.getRow(i).getCell(j);
 
-      if (cell.text === TAG) {
-        cell.value = 'Editado';
+      if (CODES.includes(cell.text)) {
+        const key = TAGS.reduce((acc, t) => {
+          acc = acc.replace(t, '');
+          return acc;
+        }, cell.text);
+
+        cell.value = replacements[key];
       }
     }
   }
 
-  // const newWorkbook = new excel.Workbook();
-  // newWorkbook.addWorksheet(sheet);
-  // newWorkbook.xlsx.writeFile('editedAlt.xlsx');
+  addImage(workbook);
+
   workbook.xlsx.writeFile('editedAlt.xlsx');
+}
+
+async function addImage(workbook) {
+  const sheet = workbook.worksheets[0];
+
+  const logo = workbook.addImage({
+    filename: logoFile,
+    extension: 'png',
+  });
+
+  sheet.addImage(logo, 'B2: D4');
+
+  workbook.xlsx.writeFile('withImage.xlsx');
 }
 
 module.exports = { editSheet };
