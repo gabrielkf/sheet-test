@@ -7,6 +7,8 @@
     "go": "node index.js"
   },
   "dependencies": {
+    "exceljs": "^4.3.0",
+    "sheetjs-style": "^0.15.8",
     "xlsx": "^0.18.3"
   }
 }
