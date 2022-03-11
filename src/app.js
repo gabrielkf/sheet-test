@@ -1,6 +1,9 @@
 const sheetJs = require('./sheetjs');
 const excelJs = require('./exceljs');
+const populate = require('./populate');
 
-const lib = 0 ? 'sheetjs' : 'exceljs';
+const libs = [sheetJs, excelJs, populate];
 
-module.exports = lib === 'sheetjs' ? sheetJs : excelJs;
+const lib = libs[2];
+
+module.exports = lib;

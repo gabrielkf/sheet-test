@@ -1,17 +1,30 @@
-const excel = require('exceljs');
-const { resolve, join } = require('path');
+const Excel = require('exceljs');
+const { createReadStream, createWriteStream } = require('fs');
 
-const { CODES, TAGS } = require('./constants/replaceVariables');
-
-const assets = resolve(__dirname, '..', 'assets');
-const originalFile = join(assets, 'template.xlsx');
-const logoFile = join(assets, 'bulbe.png');
+const {
+  CODES,
+  TAGS,
+  CELLS,
+  ORIGINAL_FILE,
+  LOGO,
+} = require('./constants/replaceVariables');
 
 const A4 = 9;
 
+const writerOptions = {
+  filename: '../editedStream.xlsx',
+  useStyles: true,
+  useSharedStrings: true,
+};
+
+// const writerOptions = {
+//   filename: join(),
+//   useStyles: true,
+//   useSharedStrings: true,
+// };
+
 async function editSheet(replacements) {
-  const workbook = new excel.Workbook();
-  await workbook.xlsx.readFile(originalFile);
+  await workbook.xlsx.readFile(ORIGINAL_FILE, { useStyles: true });
 
   const sheet = workbook.worksheets[0];
 
@@ -29,6 +42,10 @@ async function editSheet(replacements) {
       }
     }
   }
+  // Object.keys(CELLS).forEach(c => {
+  //   const cell = sheet.findCell(c);
+  //   cell.value = CELLS[c];
+  // });
 
   addImage(workbook);
 
@@ -39,7 +56,7 @@ async function addImage(workbook) {
   const sheet = workbook.worksheets[0];
 
   const logo = workbook.addImage({
-    filename: logoFile,
+    filename: LOGO,
     extension: 'png',
   });
 
