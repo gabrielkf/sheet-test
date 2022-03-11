@@ -1,19 +1,40 @@
 const Populate = require('xlsx-populate');
+const { convertToPdf } = require('./convert');
 
 const {
-  CODES,
   TAGS,
+  TAG_MARKERS,
   CELLS,
   ORIGINAL_FILE,
-  LOGO,
 } = require('./constants/replaceVariables');
 
-async function editSheet() {
-  Populate.fromFileAsync(ORIGINAL_FILE).then(workbook => {
-    replaceByCell(workbook);
+async function editSheet(replacements) {
+  Populate.fromFileAsync(ORIGINAL_FILE)
+    .then(workbook => {
+      replaceByTag(workbook, replacements);
 
-    return workbook.toFileAsync('./out.xlsx');
-  });
+      return workbook.outputAsync();
+      //   .then(blob => {
+      //   return blob.
+      // });
+
+      // return workbook.toFileAsync('./out.xlsx');
+    })
+    .then(data => {
+      // console.log(data);
+      convertToPdf(data);
+    });
+
+  // convertToPdf(data);
+  // });
+
+  // await convertToPdf(buffer);
+}
+
+function replaceByTag(workbook, replacements) {
+  TAGS.forEach(tag =>
+    workbook.find(TAG_MARKERS.join(tag), replacements[tag])
+  );
 }
 
 function replaceByCell(workbook) {

@@ -2,16 +2,18 @@ const { resolve, join } = require('path');
 
 const ASSETS = resolve(__dirname, '..', '..', 'assets');
 module.exports.ORIGINAL_FILE = join(ASSETS, 'template.xlsx');
+module.exports.NEW_FILE = resolve(__dirname, '..', '..', 'out.xlsx');
 module.exports.LOGO = join(ASSETS, 'bulbe.png');
 
-module.exports.CODES = [
-  '{representante}',
-  '{representanteEndereco}',
-  '{representanteCidade}',
-  '{total}',
-  '{vencimento}',
-  '{locacao}',
-  '{instalacao}',
+module.exports.TAG_MARKERS = ['{', '}'];
+module.exports.TAGS = [
+  'representante',
+  'representanteEndereco',
+  'representanteCidade',
+  'total',
+  'vencimento',
+  'locacao',
+  'instalacao',
 ];
 
 module.exports.CELLS = {
@@ -23,5 +25,3 @@ module.exports.CELLS = {
   D10: '12345',
   G10: '3005155000',
 };
-
-module.exports.TAGS = ['{', '}'];
