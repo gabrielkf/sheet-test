@@ -1,6 +1,6 @@
 const App = require('./src/app');
 
-const replacement = {
+const replacements = {
   representante: 'Julia Silva',
   representanteEndereco: 'Av. dos Engenheiros, 1250/405',
   representanteCidade: 'Castelo - Belo Horizonte/MG',
@@ -11,5 +11,6 @@ const replacement = {
 };
 
 let run = (async function () {
-  await App.editSheet(replacement);
+  await App.editSheet(replacements);
+  // await App.convertToPdf();
 })();
