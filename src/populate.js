@@ -13,6 +13,21 @@ async function editSheet(replacements) {
     .then(workbook => {
       replaceByTag(workbook, replacements);
 
+      const [sheet] = workbook.sheets();
+      const hCenter = sheet.printOptions('horizontalCentered');
+      const printGrid = sheet.printGridLines();
+      const margins = {
+        top: sheet.pageMargins('top'),
+        right: sheet.pageMargins('right'),
+        bottom: sheet.pageMargins('bottom'),
+        left: sheet.pageMargins('left'),
+      };
+
+      // console.log(hCenter);
+      // console.log(printGrid);
+      // console.log(margins);
+      // console.log(sheet.pageBreaks());
+
       return workbook.outputAsync();
     })
     .then(buffer => {
